@@ -1,0 +1,21 @@
+language: android
+sudo: required
+env:
+  global:
+  - secure: SNeG2yWsL2p1HP9ui7Q6h5M7UZixU9XBDDqZuXHaZDr/NioqjfxI08BEpTDfsx6rnDXcSb3mpHV9XmxqRxKNh+55fNFXTwNu7u9R71NXvvTrINhdDB5cNTGfbQsZ2XCSFUg6KVKUVZ9kPMz4duvgea5AvGKc++LVr213xniKOBhY793Cgj/AcpBjVIkB6ZMyjTF6BIm5yasv26nuRDve1VNwWsBSWHD0oyawi6otNnvVeQ4GJ4YVNOq9zvp1rjctsqTlZGO/Q4reEk/jHHAylp1YwomgTLipoyAd6cDdj6TPnm5Yrxa1zQ9FE01DsBTFw/vG+0KZ1ucEGRquR9Z/WF4yEJ6p1pepLEhOsa7SxRKslOfV0F6NRwvwF1EFr2unZ9B8VGiJ2LHBNHhf4hLZuHltv16ttOLs2li8P8B8o4t0cfqKzHH3J/tszVwk1XENNmodPVbDcjGnJKyw+SrQB3rz4mVnAxI8nBWfBseJsB6ojyWduLULsYsyfYKLciG7v/Vz8C4/WSbX5hez8pAn12lp3JDVHyBmNtuQ37LiG+Xmuo1tVdoY1zFOFzBp26uh2ZA5qHc3HCPlh9LZapQNJSDkzAnZazv2bmvWgQgfs2Wame5TBcQr3wDGkLh1WWnh1SUHjuAiItne/xuPi+MrYKzmChwbfa0T/9sHvgKSEIY=
+  - secure: U36JPxnjDcKnx+NEDf+2n96QQk/y7WgLsPQjYYpcRruR5VLeUYmTqKj9mDDzKwtzCm31sjfIUXZn3dzJbn/kw3gRLcQ/9c/AEDlmyNahw5nOxLno8o9ezwv6j3+MsDZKF//s9DLKL62gvgiK/AOAl9QXGf5I1DokinCR6zDsPKwDmsva1F2XPQ2ncAAb0YDvVq+i5g5v5YL3jmEAzfipgZZ6lWrdcqCMfOc7kHW8erZCw+TXUfsx23ONE/KnM02ARy0C2Ut3ff5Y+KZvHsmNtmaf9dBwt6hQq41hIEeKbvzJCf4StpY31PwxiTfMUq08hts/MVGjFrHm1U0DIN+5yc5JAlG529IuHVU2wwFJcXJr87ABiAUGRqtvDcZMcRQ0Vp+Byk8avFPrulR9YF5FPUXVdbMN5E6IQNe6+FUGpL/j+3wWWLAjZ65/cxdkXkvfBBLvU/JBBv+8x0Pp9y2NalP1VlP7O7GwvPX8aeoljSkJc1O1zXgboA/KBeNeQuVektqtptqzYkr69g2R9RZY4W5uHGBVZ8Al2rbhuASLCxmEdLKjc99a2zPDgeZkeaVxB9CBluivpVSPj8XuDZs3gyrKglzbGkBUdi4sUmAF3z0qFHXBsYtsue8hb0T5FKqpHxmtm2XE8AsMKT4vfzq3eb+ea74nTA7tXbuY1+IBp78=
+jdk: oraclejdk8
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-26.0.2
+  - android-26
+install:
+- chmod +x ./gradlew
+script: ./gradlew clean test assembleRelease
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+after_failure: cat $TRAVIS_BUILD_DIR/app/build/outputs/lint-results-debug.xml
