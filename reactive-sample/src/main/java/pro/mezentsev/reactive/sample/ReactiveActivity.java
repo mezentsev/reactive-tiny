@@ -1,4 +1,4 @@
-package me.irbis.reactive.sample;
+package pro.mezentsev.reactive.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,11 +7,11 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import me.irbis.reactive.CompositeSubscription;
-import me.irbis.reactive.InterruptedExecutor;
-import me.irbis.reactive.Observable;
-import me.irbis.reactive.ObservableOnSubscribe;
-import me.irbis.reactive.Subscriber;
+import pro.mezentsev.reactive.CompositeSubscription;
+import pro.mezentsev.reactive.InterruptedExecutor;
+import pro.mezentsev.reactive.Observable;
+import pro.mezentsev.reactive.ObservableOnSubscribe;
+import pro.mezentsev.reactive.Subscriber;
 
 public class ReactiveActivity extends Activity {
     @NonNull

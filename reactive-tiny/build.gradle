@@ -1,26 +1,26 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "${rootProject.ext.libraryVersion}"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    implementation "com.android.support:support-annotations:26.1.0"
+    implementation "com.android.support:support-annotations:${rootProject.ext.supportLibVersion}"
 
-    testImplementation "junit:junit:4.12"
-    testImplementation "org.robolectric:robolectric:3.3.2"
+    testImplementation "junit:junit:${rootProject.ext.junitVersion}"
+    testImplementation "org.robolectric:robolectric:${rootProject.ext.robolectricVersion}"
 }

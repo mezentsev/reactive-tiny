@@ -1,4 +1,4 @@
-package me.irbis.reactive;
+package pro.mezentsev.reactive;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

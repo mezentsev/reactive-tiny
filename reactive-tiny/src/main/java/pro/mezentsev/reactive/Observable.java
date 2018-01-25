@@ -1,4 +1,4 @@
-package me.irbis.reactive;
+package pro.mezentsev.reactive;
 
 import android.os.Handler;
 import android.os.Looper;

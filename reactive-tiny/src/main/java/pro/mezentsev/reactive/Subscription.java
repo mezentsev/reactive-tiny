@@ -1,4 +1,4 @@
-package me.irbis.reactive;
+package pro.mezentsev.reactive;
 
 public interface Subscription {
     void unsubscribe();
