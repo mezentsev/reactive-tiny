@@ -4,17 +4,14 @@ import android.support.annotation.NonNull;
 
 import junit.framework.Assert;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(RobolectricTestRunner.class)
 public class ReactiveUnitTest {
     @Test
@@ -98,6 +95,7 @@ public class ReactiveUnitTest {
 
         Thread.sleep(3500);
         Assert.assertNotNull(callable2.mIntRes);
+        Thread.sleep(10000);
     }
 
     @Test
