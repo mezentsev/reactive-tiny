@@ -38,32 +38,35 @@ public class ReactiveActivity extends Activity {
             mSubscription.unsubscribe();
             mInterruptedExecutor.cancel();
 
-            mSubscription.add(Observable.create((ObservableOnSubscribe<String>) o -> {
+            mSubscription.add(Observable.create(new ObservableOnSubscribe<String>() {
+                @Override
+                public void subscribe(@NonNull Subscriber<String> o) throws Exception {
 
-                for (int i = 0; i < 10; i++) {
-                    Log.d(TAG, "[EMITTER] onNext " + Thread.currentThread());
-                    o.onNext(".");
+                    for (int i = 0; i < 10; i++) {
+                        Log.d(TAG, "[EMITTER] onNext " + Thread.currentThread());
+                        o.onNext(".");
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            o.onError(e);
+                            return;
+                        }
+                    }
+
+                    Log.d(TAG, "[EMITTER] onError " + Thread.currentThread());
+                    o.onError(new Throwable("Problem detected"));
 
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         o.onError(e);
                         return;
                     }
+
+                    Log.d(TAG, "[EMITTER] onComplete " + Thread.currentThread());
+                    o.onComplete();
                 }
-
-                Log.d(TAG, "[EMITTER] onError " + Thread.currentThread());
-                o.onError(new Throwable("Problem detected"));
-
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    o.onError(e);
-                    return;
-                }
-
-                Log.d(TAG, "[EMITTER] onComplete " + Thread.currentThread());
-                o.onComplete();
             })
                     .subscribeOn(mInterruptedExecutor)
                     .observeOn(Observable.MainThreadExecutor.get())

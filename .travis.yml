@@ -13,7 +13,7 @@ android:
   - android-26
 install:
 - chmod +x ./gradlew
-script: ./gradlew clean test assembleRelease
+script: ./gradlew clean :reactive-tiny:testDebugUnitTest assembleRelease
 notifications:
   email:
     on_success: change
