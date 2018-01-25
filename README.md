@@ -1,5 +1,5 @@
 # Reactive Tiny
-[![Build Status](https://travis-ci.org/xCryogenx/reactive-tiny.svg?branch=master)](https://travis-ci.org/xCryogenx/reactive-tiny)
+[![Build Status](https://travis-ci.org/mezentsev/reactive-tiny.svg?branch=master)](https://travis-ci.org/xCryogenx/reactive-tiny)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [ ![Download](https://api.bintray.com/packages/mezentsev/maven/reactive-tiny/images/download.svg) ](https://bintray.com/mezentsev/maven/reactive-tiny/_latestVersion)
 
