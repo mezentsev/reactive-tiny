@@ -3,13 +3,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [ ![Download](https://api.bintray.com/packages/mezentsev/maven/reactive-tiny/images/download.svg) ](https://bintray.com/mezentsev/maven/reactive-tiny/_latestVersion)
 
-Reactive Tiny is a lightweight library for composing asynchronous and event-based programs using observable sequences. It's light version of RxJava.
+Reactive Tiny is a lightweight library for composing asynchronous and event-based programs using observable sequences.
 
 ## Getting started
 
 The first step is to include reactive-tiny into your project, for example, as a Gradle compile dependency:
 
 ```groovy
+repositories {
+    maven {
+        url 'https://dl.bintray.com/mezentsev/maven'
+    }
+}
+
 dependencies {
     implementation 'pro.mezentsev:reactive-tiny:1.0.2'
 }
