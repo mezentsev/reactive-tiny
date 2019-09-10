@@ -1,23 +1,23 @@
 package pro.mezentsev.reactive;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 class SimpleSubscription implements Subscription {
     @NonNull
-    private final Action mSubscriptionAction;
+    private final Action subscriptionAction;
 
     public SimpleSubscription(@NonNull Action subscriptionAction) {
-        mSubscriptionAction = subscriptionAction;
+        this.subscriptionAction = subscriptionAction;
     }
 
     @Override
     public void unsubscribe() {
-        mSubscriptionAction.unsubscribe();
+        subscriptionAction.unsubscribe();
     }
 
     @NonNull
     public Subscription start() {
-        mSubscriptionAction.start();
+        subscriptionAction.start();
         return this;
     }
 }

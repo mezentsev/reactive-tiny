@@ -11,7 +11,7 @@ The first step is to include reactive-tiny into your project, for example, as a 
 
 ```groovy
 dependencies {
-    implementation 'pro.mezentsev:reactive-tiny:1.0.1'
+    implementation 'pro.mezentsev:reactive-tiny:1.0.2'
 }
 ```
 

@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
@@ -15,6 +15,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+          url 'https://dl.bintray.com/mezentsev/maven'
+        }
     }
 }
 
@@ -28,18 +31,19 @@ ext {
     siteUrl = 'https://github.com/mezentsev/reactive-tiny'
     gitUrl = 'https://github.com/mezentsev/reactive-tiny.git'
     libraryDescription = 'Tiny Reactive implementation'
-    libraryVersion = '1.0.1'
+    libraryVersion = '1.0.2'
     developerId = 'mezentsev'
     developerName = 'Vadim Mezentsev'
     developerEmail = 'mezentsevvo@gmail.com'
     licenseName = 'The MIT License'
-    licenseUrl = 'https://raw.githubusercontent.com/mezentsev/reactive-tiny/master/LICENSEE'
+    licenseUrl = 'https://raw.githubusercontent.com/mezentsev/reactive-tiny/master/LICENSE'
     allLicenses = ["MIT"]
 
     minSdkVersion = 15
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-    supportLibVersion = "26.1.0"
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    appcompatVersion = "1.1.0"
+    supportVersion = "28.0.0"
     junitVersion = "4.12"
     robolectricVersion = "3.3.2"
 }

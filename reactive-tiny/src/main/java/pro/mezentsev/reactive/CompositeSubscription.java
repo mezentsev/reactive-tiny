@@ -1,6 +1,6 @@
 package pro.mezentsev.reactive;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -9,22 +9,22 @@ import java.util.List;
 public class CompositeSubscription implements Subscription {
 
     @NonNull
-    private final List<Subscription> mSubscriptions;
+    private final List<Subscription> subscriptions;
 
     public CompositeSubscription() {
-        mSubscriptions = Collections.synchronizedList(new LinkedList<Subscription>());
+        subscriptions = Collections.synchronizedList(new LinkedList<Subscription>());
     }
 
     public void add(@NonNull Subscription subscription) {
-        mSubscriptions.add(subscription);
+        subscriptions.add(subscription);
     }
 
     @Override
     public void unsubscribe() {
-        for (Subscription subscription : mSubscriptions) {
+        for (Subscription subscription : subscriptions) {
             subscription.unsubscribe();
         }
 
-        mSubscriptions.clear();
+        subscriptions.clear();
     }
 }

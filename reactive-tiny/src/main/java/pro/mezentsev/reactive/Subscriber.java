@@ -1,6 +1,6 @@
 package pro.mezentsev.reactive;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public interface Subscriber<T> {
     void onNext(T object);

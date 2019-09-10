@@ -38,14 +38,14 @@
 
 -optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 
--keep public interface me.irbis.reactive.Subscriber { *; }
--keep public interface me.irbis.reactive.Subscription { *; }
--keep public interface me.irbis.reactive.Action { *; }
--keep public interface me.irbis.reactive.ObservableOnSubscribe { *; }
+-keep public interface pro.mezentsev.reactive.Subscriber { *; }
+-keep public interface pro.mezentsev.reactive.Subscription { *; }
+-keep public interface pro.mezentsev.reactive.Action { *; }
+-keep public interface pro.mezentsev.reactive.ObservableOnSubscribe { *; }
 
--keep public class me.irbis.reactive.CompositeSubscription { public *; }
--keep public class me.irbis.reactive.SimpleSubscription { public *; }
--keep public class me.irbis.reactive.Observable { public *; }
--keep public class me.irbis.reactive.InterruptedExecutor { public *; }
+-keep public class pro.mezentsev.reactive.CompositeSubscription { public *; }
+-keep public class pro.mezentsev.reactive.SimpleSubscription { public *; }
+-keep public class pro.mezentsev.reactive.Observable { public *; }
+-keep public class pro.mezentsev.reactive.InterruptedExecutor { public *; }
 
--keep public class me.irbis.reactive.Observable$* { public *; }
+-keep public class pro.mezentsev.reactive.Observable$* { public *; }

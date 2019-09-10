@@ -2,10 +2,11 @@ package pro.mezentsev.reactive.sample;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import pro.mezentsev.reactive.CompositeSubscription;
 import pro.mezentsev.reactive.InterruptedExecutor;
@@ -18,10 +19,10 @@ public class ReactiveActivity extends Activity {
     public static final String TAG = ReactiveActivity.class.getSimpleName();
 
     @NonNull
-    private final CompositeSubscription mSubscription = new CompositeSubscription();
+    private final CompositeSubscription subscription = new CompositeSubscription();
 
     @NonNull
-    private final InterruptedExecutor mInterruptedExecutor = new InterruptedExecutor();
+    private final InterruptedExecutor interruptedExecutor = new InterruptedExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class ReactiveActivity extends Activity {
         buttonView.setOnClickListener(view -> {
             timerView.setText("START");
 
-            mSubscription.unsubscribe();
-            mInterruptedExecutor.cancel();
+            subscription.unsubscribe();
+            interruptedExecutor.cancel();
 
-            mSubscription.add(Observable.create((ObservableOnSubscribe<String>) o -> {
+            subscription.add(Observable.create((ObservableOnSubscribe<String>) o -> {
 
                 for (int i = 0; i < 10; i++) {
                     Log.d(TAG, "[EMITTER] onNext " + Thread.currentThread());
@@ -65,7 +66,7 @@ public class ReactiveActivity extends Activity {
                 Log.d(TAG, "[EMITTER] onComplete " + Thread.currentThread());
                 o.onComplete();
             })
-                    .subscribeOn(mInterruptedExecutor)
+                    .subscribeOn(interruptedExecutor)
                     .observeOn(Observable.MainThreadExecutor.get())
                     .subscribe(new Subscriber<String>() {
                         @Override
@@ -93,8 +94,8 @@ public class ReactiveActivity extends Activity {
 
         stopButtonView.setOnClickListener(view -> {
             timerView.setText("STOPPED");
-            mSubscription.unsubscribe();
-            mInterruptedExecutor.cancel();
+            subscription.unsubscribe();
+            interruptedExecutor.cancel();
         });
     }
 }

@@ -2,8 +2,9 @@ package pro.mezentsev.reactive;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -51,26 +52,28 @@ public class Observable<T> {
 
     private static final class SubscriptionAction<T> implements Action, Subscriber<T> {
         @NonNull
-        private final Observable<T> mObservable;
+        private final Observable<T> observable;
         @NonNull
-        private final ObservableOnSubscribe<T> mObservableOnSubscribe;
+        private final ObservableOnSubscribe<T> observableOnSubscribe;
+
+        @NonNull
+        private final Object subscriberLock = new Object();
+
         @Nullable
-        private Subscriber<T> mSubscriber;
-        @NonNull
-        final Object mSubscriberLock = new Object();
+        private Subscriber<T> subscriber;
 
         SubscriptionAction(@NonNull Observable<T> observable,
                            @NonNull ObservableOnSubscribe<T> observableOnSubscribe,
                            @NonNull Subscriber<T> subscriber) {
-            mObservable = observable;
-            mObservableOnSubscribe = observableOnSubscribe;
-            mSubscriber = subscriber;
+            this.observable = observable;
+            this.observableOnSubscribe = observableOnSubscribe;
+            this.subscriber = subscriber;
         }
 
         @Override
         public void run() {
             try {
-                mObservableOnSubscribe.subscribe(this);
+                observableOnSubscribe.subscribe(this);
             } catch (Exception e) {
                 onError(e);
             }
@@ -78,27 +81,27 @@ public class Observable<T> {
 
         @Override
         public void start() {
-            mObservable.SubscribeExecutor.execute(this);
+            observable.SubscribeExecutor.execute(this);
         }
 
         @Override
         public void unsubscribe() {
-            synchronized (mSubscriberLock) {
-                mSubscriber = null;
+            synchronized (subscriberLock) {
+                subscriber = null;
             }
         }
 
         @Override
         public void onNext(T object) {
-            if (mSubscriber != null) {
+            if (subscriber != null) {
                 final T nextObject = object;
-                mObservable.ObserveExecutor.execute(new Runnable() {
+                observable.ObserveExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (mSubscriber != null) {
-                            synchronized (mSubscriberLock) {
-                                if (mSubscriber != null) {
-                                    mSubscriber.onNext(nextObject);
+                        if (subscriber != null) {
+                            synchronized (subscriberLock) {
+                                if (subscriber != null) {
+                                    subscriber.onNext(nextObject);
                                 }
                             }
                         }
@@ -109,14 +112,14 @@ public class Observable<T> {
 
         @Override
         public void onComplete() {
-            if (mSubscriber != null) {
-                mObservable.ObserveExecutor.execute(new Runnable() {
+            if (subscriber != null) {
+                observable.ObserveExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (mSubscriber != null) {
-                            synchronized (mSubscriberLock) {
-                                if (mSubscriber != null) {
-                                    mSubscriber.onComplete();
+                        if (subscriber != null) {
+                            synchronized (subscriberLock) {
+                                if (subscriber != null) {
+                                    subscriber.onComplete();
                                 }
                             }
                         }
@@ -127,15 +130,15 @@ public class Observable<T> {
 
         @Override
         public void onError(@NonNull Throwable t) {
-            if (mSubscriber != null) {
+            if (subscriber != null) {
                 final Throwable nextThrowable = t;
-                mObservable.ObserveExecutor.execute(new Runnable() {
+                observable.ObserveExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (mSubscriber != null) {
-                            synchronized (mSubscriberLock) {
-                                if (mSubscriber != null) {
-                                    mSubscriber.onError(nextThrowable);
+                        if (subscriber != null) {
+                            synchronized (subscriberLock) {
+                                if (subscriber != null) {
+                                    subscriber.onError(nextThrowable);
                                 }
                             }
                         }
@@ -154,14 +157,14 @@ public class Observable<T> {
         private static final WorkerExecutor INSTANCE = new WorkerExecutor();
 
         @NonNull
-        private final Executor mExecutor = Executors.newSingleThreadExecutor();
+        private final Executor executor = Executors.newSingleThreadExecutor();
 
         private WorkerExecutor() {
         }
 
         @Override
         public void execute(@NonNull Runnable command) {
-            mExecutor.execute(command);
+            executor.execute(command);
         }
     }
 
@@ -175,15 +178,15 @@ public class Observable<T> {
         private static final MainThreadExecutor INSTANCE = new MainThreadExecutor();
 
         @NonNull
-        private final Handler mHandler;
+        private final Handler handler;
 
         private MainThreadExecutor() {
-            mHandler = new Handler(Looper.getMainLooper());
+            handler = new Handler(Looper.getMainLooper());
         }
 
         @Override
         public void execute(@NonNull Runnable command) {
-            mHandler.post(command);
+            handler.post(command);
         }
     }
 

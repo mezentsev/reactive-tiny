@@ -1,18 +1,22 @@
 package pro.mezentsev.reactive;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import junit.framework.Assert;
 
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ReactiveUnitTest {
     @Test
     public void errorAndSuccess() throws InterruptedException {
@@ -23,18 +27,18 @@ public class ReactiveUnitTest {
                 .subscribeOn(Observable.MainThreadExecutor.get())
                 .subscribe(subscriber1);
 
-        Assert.assertNull(subscriber1.mThrowable);
-        Assert.assertNotNull(subscriber1.mRes);
+        Assert.assertNull(subscriber1.throwable);
+        Assert.assertNotNull(subscriber1.res);
 
-        integerObservable.mHasException = true;
+        integerObservable.hasException = true;
         ThreadSubscriber subscriber2 = new ThreadSubscriber();
         Observable.create(integerObservable)
                 .observeOn(Observable.WorkerExecutor.get())
                 .subscribeOn(Observable.MainThreadExecutor.get())
                 .subscribe(subscriber2);
 
-        Assert.assertNull(subscriber2.mRes);
-        Assert.assertNotNull(subscriber2.mThrowable);
+        Assert.assertNull(subscriber2.res);
+        assertNotNull(subscriber2.throwable);
 
         IntegerObservable integerObservable2 = new IntegerObservable(false);
         ThreadSubscriber subscriber3 = new ThreadSubscriber();
@@ -43,24 +47,24 @@ public class ReactiveUnitTest {
                 .subscribeOn(Observable.MainThreadExecutor.get())
                 .subscribe(subscriber3);
 
-        Assert.assertNotNull(subscriber3.mRes);
-        Assert.assertNull(subscriber3.mThrowable);
-        Assert.assertTrue(subscriber3.mCompleted);
+        Assert.assertNotNull(subscriber3.res);
+        Assert.assertNull(subscriber3.throwable);
+        Assert.assertTrue(subscriber3.completed);
 
-        integerObservable2.mHasException = true;
+        integerObservable2.hasException = true;
         ThreadSubscriber subscriber4 = new ThreadSubscriber();
         Observable.create(integerObservable2)
                 .observeOn(Observable.WorkerExecutor.get())
                 .subscribeOn(Observable.MainThreadExecutor.get())
                 .subscribe(subscriber4);
 
-        Assert.assertNull(subscriber4.mRes);
-        Assert.assertNotNull(subscriber4.mThrowable);
-        Assert.assertFalse(subscriber4.mCompleted);
+        Assert.assertNull(subscriber4.res);
+        Assert.assertNotNull(subscriber4.throwable);
+        Assert.assertFalse(subscriber4.completed);
 
-        assertEquals(subscriber1.mResThread, subscriber2.mResThread);
-        assertEquals(subscriber1.mResThread, subscriber3.mResThread);
-        assertEquals(subscriber1.mResThread, subscriber4.mResThread);
+        assertEquals(subscriber1.resThread, subscriber2.resThread);
+        assertEquals(subscriber1.resThread, subscriber3.resThread);
+        assertEquals(subscriber1.resThread, subscriber4.resThread);
     }
 
     @Test
@@ -90,11 +94,11 @@ public class ReactiveUnitTest {
                 .subscribe(subscriber);
 
         Thread.sleep(2000);
-        Assert.assertNotNull(callable.mIntRes);
-        Assert.assertNull(callable1.mIntRes);
+        Assert.assertNotNull(callable.intRes);
+        Assert.assertNull(callable1.intRes);
 
         Thread.sleep(3500);
-        Assert.assertNotNull(callable2.mIntRes);
+        Assert.assertNotNull(callable2.intRes);
         Thread.sleep(10000);
     }
 
@@ -112,20 +116,20 @@ public class ReactiveUnitTest {
 
         assertTrue(interruptedExecutor.cancel());
         Thread.sleep(800);
-        assertNull(callable.mIntRes);
+        assertNull(callable.intRes);
         subscription.unsubscribe();
     }
 
     private static class IntegerObservable implements ObservableOnSubscribe<Integer> {
-        boolean mHasException;
+        boolean hasException;
 
         public IntegerObservable(boolean hasException) {
-            mHasException = hasException;
+            this.hasException = hasException;
         }
 
         @Override
         public void subscribe(@NonNull Subscriber<Integer> subscriber) throws Exception {
-            if (mHasException) {
+            if (hasException) {
                 throw new Exception();
             }
 
@@ -137,7 +141,7 @@ public class ReactiveUnitTest {
     }
 
     private static class IntegerSleepObservable extends IntegerObservable {
-        volatile Integer mIntRes;
+        volatile Integer intRes;
 
         public IntegerSleepObservable(boolean hasException) {
             super(hasException);
@@ -145,22 +149,22 @@ public class ReactiveUnitTest {
 
         @Override
         public void subscribe(@NonNull Subscriber<Integer> subscriber) throws Exception {
-            if (mHasException) {
+            if (hasException) {
                 throw new Exception();
             }
 
             Thread.sleep(500);
 
-            mIntRes = 1;
-            subscriber.onNext(mIntRes);
+            intRes = 1;
+            subscriber.onNext(intRes);
             Thread.sleep(500);
 
-            mIntRes++;
-            subscriber.onNext(mIntRes);
+            intRes++;
+            subscriber.onNext(intRes);
             Thread.sleep(500);
 
-            mIntRes++;
-            subscriber.onNext(mIntRes);
+            intRes++;
+            subscriber.onNext(intRes);
             Thread.sleep(500);
 
             subscriber.onComplete();
@@ -168,26 +172,26 @@ public class ReactiveUnitTest {
     }
 
     private class ThreadSubscriber implements Subscriber<Integer> {
-        Thread mResThread;
-        Integer mRes;
-        Throwable mThrowable;
-        boolean mCompleted = false;
+        Thread resThread;
+        Integer res;
+        Throwable throwable;
+        boolean completed = false;
 
         @Override
         public void onNext(Integer object) {
-            mResThread = Thread.currentThread();
-            mRes = object;
+            resThread = Thread.currentThread();
+            res = object;
         }
 
         @Override
         public void onComplete() {
-            mCompleted = true;
+            completed = true;
         }
 
         @Override
         public void onError(@NonNull Throwable t) {
-            mResThread = Thread.currentThread();
-            mThrowable = t;
+            resThread = Thread.currentThread();
+            throwable = t;
         }
     }
 }
