@@ -10,14 +10,8 @@ Reactive Tiny is a lightweight library for composing asynchronous and event-base
 The first step is to include reactive-tiny into your project, for example, as a Gradle compile dependency:
 
 ```groovy
-repositories {
-    maven {
-        url 'https://dl.bintray.com/mezentsev/maven'
-    }
-}
-
 dependencies {
-    implementation 'pro.mezentsev:reactive-tiny:1.0.2'
+    implementation 'pro.mezentsev:reactive-tiny:1.1.0'
 }
 ```
 

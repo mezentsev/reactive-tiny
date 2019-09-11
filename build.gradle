@@ -31,7 +31,7 @@ ext {
     siteUrl = 'https://github.com/mezentsev/reactive-tiny'
     gitUrl = 'https://github.com/mezentsev/reactive-tiny.git'
     libraryDescription = 'Tiny Reactive implementation'
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.1.0'
     developerId = 'mezentsev'
     developerName = 'Vadim Mezentsev'
     developerEmail = 'mezentsevvo@gmail.com'
